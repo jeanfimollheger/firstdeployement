@@ -9,6 +9,17 @@
 </head>
 <body>
   <h1>Task list</h1>
+  <a href= "{% url 'home' %}">Accueil</a><br>
+  <a href= "{% url 'member_list' %}">Liste des membres</a>
+
+  {% if user.is_authenticated %}
+  <p>Bienvenue, {{ user.username }} !</p>
+  <a href="{% url 'logout' %}">Se déconnecter</a>
+  {% else %}
+  <p>Personne n'est connecté.</p>
+  <a href="{% url 'login' %}">Se connecter</a>
+  {% endif %} <br /><br />
+
   {% block content %}{% endblock %}
 </body>
 </html>
