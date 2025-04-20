@@ -31,6 +31,7 @@ class MemberLoginView(LoginView):
     success_url = reverse_lazy('home')  # Redirect to home page after successful login
     redirect_authenticated_user = True  # Redirect authenticated users to home page
 
+
 class MemberLogoutView(LogoutView):
     template_name = 'members/logout.html'
     next_page = reverse_lazy('home')  # Redirect to home page after successful logout
