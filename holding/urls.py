@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home, name='home'),  # URL de la page d'accueil
     path('members/', include('members.urls')),
+    path('tasks/', include('tasks_list.urls')),
 ]
 
 # Servir les fichiers médias pendant le développement
