@@ -8,13 +8,21 @@
   <title>Welcome to the task list</title>
 </head>
 <body>
-  <h1>Task list</h1>
+  <h1>Tasks list</h1>
   <a href= "{% url 'home' %}">Accueil</a><br>
   <a href= "{% url 'member_list' %}">Liste des membres</a>
 
   {% if user.is_authenticated %}
   <p>Bienvenue, {{ user.username }} !</p>
   <a href="{% url 'logout' %}">Se déconnecter</a>
+  <ul style="display: flex; gap: 35px; padding: 10;">
+    <li><a href="{% url 'category_create' %}">Créer</a> une catégorie</li>
+    <li>à venir</li>
+  </ul>
+  <ul style="display: flex; gap: 35px; padding: 10;">
+    <li><a href="{% url 'task_create' %}">Créer</a> une tâche</li>
+    <li>à venir</li>
+  </ul>
   {% else %}
   <p>Personne n'est connecté.</p>
   <a href="{% url 'login' %}">Se connecter</a>

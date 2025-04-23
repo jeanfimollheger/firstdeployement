@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task
+from .models import Task, Category
 
 class TaskCreationForm(forms.ModelForm):
     class Meta:
@@ -25,4 +25,18 @@ class TaskCreationForm(forms.ModelForm):
             'category': 'Select the category for this task.',
             'project': 'Select the project associated with this task.',
             'task_target_date': 'Select the target date for this task.',
+        }
+
+class CategoryCreationForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Enter category name'}),
+        }
+        labels = {
+            'name': 'Category Name',
+        }
+        help_texts = {
+            'name': 'Please provide a name for the category.',
         }

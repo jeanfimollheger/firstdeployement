@@ -14,7 +14,13 @@ def default_target_date():
 class Category(models.Model):
   name=models.CharField(max_length=100, unique=True)
   slug=models.SlugField(max_length=100, unique=True, blank=True)
-
+  author=models.ForeignKey(settings.AUTH_USER_MODEL, 
+                           on_delete=models.CASCADE, 
+                           related_name="author_categories", 
+                           null=True, 
+                           blank=True
+                          )
+  
   def save(self, *args, **kwargs):
     if not self.slug:
       self.slug = slugify(self.name)
@@ -28,7 +34,13 @@ class Project(models.Model):
   name=models.CharField(max_length=100, unique=True)
   slug=models.SlugField(max_length=100, unique=True, blank=True)
   target_date_project = models.DateField(default=default_target_date)
- 
+  author=models.ForeignKey(settings.AUTH_USER_MODEL, 
+                          on_delete=models.CASCADE, 
+                          related_name="author_projects", 
+                          null=True, 
+                          blank=True
+                          )
+  
   def save(self, *args, **kwargs):
     if not self.slug:
       self.slug = slugify(self.name)
