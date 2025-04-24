@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task, Category
+from .models import Task, Category, Project
 
 class TaskCreationForm(forms.ModelForm):
     class Meta:
@@ -39,4 +39,21 @@ class CategoryCreationForm(forms.ModelForm):
         }
         help_texts = {
             'name': 'Please provide a name for the category.',
+        }
+
+class ProjectCreationForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['name', 'target_date_project']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Enter project name'}),
+            'target_date_project': forms.DateInput(attrs={'type': 'date'}),
+        }
+        labels = {
+            'name': 'Project Name',
+            'target_date_project': 'Target Date',
+        }
+        help_texts = {
+            'name': 'Please provide a name for the project.',
+            'target_date_project': 'Select the target date for this project.',
         }
