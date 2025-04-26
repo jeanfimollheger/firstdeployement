@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 
-{% block content %}   
-    <h1>Create Category</h1>
+{% block content %}
+<p>Contexte : {{ context }}
+<p>Action: {{ action }}</p>
+  <h1>{% if action == 'create' %}
+    Create Category !!!
+  {% elif action == 'update' %}
+    Update Category
+  {% else %}
+    Action non définie
+  {% endif %}</h1>
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}

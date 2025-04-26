@@ -1,7 +1,12 @@
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from django.urls import reverse_lazy, reverse
 from .models import Task, Category, Project
 from .forms import TaskCreationForm, CategoryCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+"""Ces mixins assurent que l'utilisateur est connecté et qu'il passe un test 
+  spécifique avant d'accéder à la vue"""
+from .models import Category
+
 
 class TaskCreateView(CreateView):
   model= Task
@@ -20,14 +25,38 @@ class CategoryCreateView(CreateView):
       # Assigner l'utilisateur connecté à l'attribut author
       form.instance.author = self.request.user
       return super().form_valid(form)
+  
+  def get_context_data(self,*args, **kwargs):
+    context = super().get_context_data(*args, **kwargs)
+    context['action'] = 'create'
+    return context
 
 
 class CategoryListView(ListView):
   model= Category
   template_name= ('tasks_list/category_list.html')
   context_object_name= 'categories'
-  
 
+  def get_queryset(self):
+      # Filtrer les catégories par l'utilisateur connecté
+      return Category.objects.filter(author=self.request.user)
+
+
+class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
+  """Ces mixins assurent que l'utilisateur est connecté et qu'il passe un test 
+  spécifique avant d'accéder à la vue"""
+  model= Category
+  form_class= CategoryCreationForm
+  template_name= ('tasks_list/category_form.html')
+  success_url=reverse_lazy('home')
+
+  def get_queryset(self):
+     return Category.objects.filter(author=self.request.user)
+  
+  def get_context_data(self, *args, **kwargs):
+    context = super().get_context_data(*args, **kwargs)
+    context['action'] = 'update'
+    return context
 
 
 class ProjectCreateView(CreateView):
