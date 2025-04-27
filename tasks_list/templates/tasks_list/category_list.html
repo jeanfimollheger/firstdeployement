@@ -5,7 +5,9 @@
     {% for category in categories %}
       <div class="category">
         <ol>
-        <li>{{ category.name }} de {{ category.author }}</li>
+        <li>{{ category.name }} (de {{ category.author }}) 
+          <a href="{% url 'category_detail' category.slug %}">Detail</a>
+          <a href="{% url 'category_update' category.slug %}">Update</a></li>
       </ol>
       </div>
     {% endfor %}

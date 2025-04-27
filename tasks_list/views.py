@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView, DeleteView
 from django.urls import reverse_lazy, reverse
 from .models import Task, Category, Project
 from .forms import TaskCreationForm, CategoryCreationForm
@@ -6,13 +6,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 """Ces mixins assurent que l'utilisateur est connecté et qu'il passe un test 
   spécifique avant d'accéder à la vue"""
 from .models import Category
-
-
-class TaskCreateView(CreateView):
-  model= Task
-  form_class= TaskCreationForm
-  template_name= ('tasks_list/task_form.html')
-  success_url=reverse_lazy('home')
 
 
 class CategoryCreateView(CreateView):
@@ -31,6 +24,20 @@ class CategoryCreateView(CreateView):
     context['action'] = 'create'
     return context
 
+
+class CategoryDetailView(LoginRequiredMixin, UserPassesTestMixin,DetailView):
+  model= Category
+  template_name= ('tasks_list/category_detail.html')
+  context_object_name= 'category'
+
+  def get_queryset(self):
+      # Filtrer les catégories par l'utilisateur connecté
+      return Category.objects.filter(author=self.request.user)
+
+  def test_func(self):
+      category = self.get_object()
+      return self.request.user == category.author
+  
 
 class CategoryListView(ListView):
   model= Category
@@ -53,6 +60,10 @@ class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin,UpdateView):
   def get_queryset(self):
      return Category.objects.filter(author=self.request.user)
   
+  def test_func(self):
+      category = self.get_object()
+      return self.request.user == category.author
+  
   def get_context_data(self, *args, **kwargs):
     context = super().get_context_data(*args, **kwargs)
     context['action'] = 'update'
@@ -66,6 +77,11 @@ class ProjectCreateView(CreateView):
   success_url=reverse_lazy('home')
 
 
+class TaskCreateView(CreateView):
+  model= Task
+  form_class= TaskCreationForm
+  template_name= ('tasks_list/task_form.html')
+  success_url=reverse_lazy('home')
 
 class TaskListView(ListView):
   model= Task
