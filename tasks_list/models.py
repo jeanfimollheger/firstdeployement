@@ -47,7 +47,7 @@ class Project(models.Model):
     super().save(*args, **kwargs)
 
   def __str__(self):
-    return {self.slug}
+    return f'{self.slug}'
 
 
 class Task(models.Model):
