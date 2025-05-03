@@ -4,10 +4,8 @@
   <h1>Tasks list :</h1>
     {% for task in tasks %}
       <div class="task">
-        <h2>{{ task.description }}</h2>
-        <p>{{ task.author }}</p>
-        <p>Status: {{ task.done }}</p>
-        <p>target_date : {{ task.task_target_date }}</p>
+        <p><h3>{{ task.description }}</h3> ({{ task.author }})</p>        
+        <p>Status: {{ task.done }}   //   target date : {{ task.task_target_date }}</p>
       </div>
     {% endfor %}
 {% endblock %}

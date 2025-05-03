@@ -27,6 +27,14 @@ class TaskCreationForm(forms.ModelForm):
             'task_target_date': 'Select the target date for this task.',
         }
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['category'].queryset = Category.objects.filter(author=user)
+            self.fields['project'].queryset = Project.objects.filter(author=user)
+            
+             
 class CategoryCreationForm(forms.ModelForm):
     class Meta:
         model = Category

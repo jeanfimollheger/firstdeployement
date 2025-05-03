@@ -116,6 +116,23 @@ class TaskCreateView(CreateView):
   template_name= ('tasks_list/task_form.html')
   success_url=reverse_lazy('home')
 
+  def get_form_kwargs(self):
+      kwargs = super().get_form_kwargs()
+      kwargs['user'] = self.request.user
+      return kwargs
+  
+  def form_valid(self, form):
+    # Assigner l'utilisateur connecté à l'attribut author
+    form.instance.author = self.request.user
+    return super().form_valid(form)
+  
+  def get_context_data(self,*args, **kwargs):
+    context = super().get_context_data(*args, **kwargs)
+    # Filtrer les querysets des catégories et projets en fonction de l'utilisateur connecté
+    context['action'] = 'create'
+    return context
+  
+
 class TaskListView(ListView):
   model= Task
   template_name= ('tasks_list/task_list.html')
